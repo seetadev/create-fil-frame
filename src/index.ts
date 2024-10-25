@@ -1,15 +1,23 @@
+#!/usr/bin/env node
+
 import { program } from 'commander';
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import sanitize from 'sanitize-filename';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function initRepo(projectPath: string) {
   process.chdir(projectPath);
 
   if (fs.existsSync('.git')) {
     fs.rmSync('.git', { recursive: true, force: true });
-    fs.rmSync('.github', { recursive: true, force: true });
+    if (fs.existsSync('.github')) {
+      fs.rmSync('.github', { recursive: true, force: true });
+    }
   }
 
   execSync('git init');
@@ -54,4 +62,4 @@ program
     createFilecoinApp(projectName, options.repo, branch);
   });
 
-program.parse(process.argv);
+program.parse();
