@@ -1,6 +1,6 @@
 {
   "name": "create-filecoin-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI to create a Filecoin-based application",
   "type": "module",
   "main": "dist/index.js",
@@ -16,6 +16,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
     "prepublish": "yarn build"
   },
   "keywords": [
