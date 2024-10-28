@@ -42,9 +42,10 @@ npx create-filecoin-app my-app --storacha
 | Option | Description | Default |
 |--------|-------------|---------|
 | `--storacha` | Initialize with Storacha NFT integration | `false` |
+| `--lighthouse` | Initialize with Lighthouse NFT integration | `false` |
 
-Integrations with Axelar, and Lighthouse are currently being worked on, and would be added to the CLI soon.
-This woukd then extend the Options to include `--axelar`, and `--lighthouse`.
+Integrations with Axelar is currently being worked on, and would be added to the CLI soon.
+This woukd then extend the Options to include `--axelar`.
 
 ## Project Structure
 
