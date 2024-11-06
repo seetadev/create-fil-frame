@@ -1,6 +1,6 @@
 # create-filecoin-app
 
-A command-line interface for creating Filecoin applications with zero configuration. Based on [fil-frame](https://github.com/FIL-Builders/fil-frame), a ready-to-use template for building Filecoin applications.
+A command-line interface (CLI) for creating Filecoin applications with zero configuration. Based on [fil-frame](https://github.com/FIL-Builders/fil-frame), a ready-to-use template for building Filecoin applications.
 
 ## Quick Start
 
@@ -21,20 +21,42 @@ yarn dev
 
 ## Usage
 
-### Basic Usage
+The CLI offers two modes: interactive mode and flag mode.
 
-Create a new Filecoin app in a directory called `my-app`:
+### Interactive Mode
+
+To use the interactive mode, simply run:
 
 ```bash
-npx create-filecoin-app my-app
+npx create-filecoin-app
 ```
 
-### Using with Storacha NFTs
+You will be prompted to answer a series of questions to configure your new project. This includes your project name, selecting your preferred storage onramp option (Lighthouse, or Storacha), and even selecting your preferred package manager (Yarn, or NPM).
 
-To initialize a project with Storacha NFT integration:
+### Flag Mode
+
+If you prefer to skip the prompts, you can use the flag mode to specify your options directly. For example, to initialise a project named `my-app`, with lighthouse as the storage onramp:
+
+```bash
+npx create-filecoin-app my-app --lighthouse
+```
+
+This command initializes a new repository named `my-app` with Lighthouse as the storage onramp.
+
+#### Using with Storacha NFTs
+
+To initialize a project with Storacha NFT integration, we make use of the `--storacha` flag:
 
 ```bash
 npx create-filecoin-app my-app --storacha
+```
+
+#### Using with Lighthouse NFTs
+
+To initialize a project with Lighthouse NFT integration, we make use of the `--lighthouse` flag:
+
+```bash
+npx create-filecoin-app my-app --lighthouse
 ```
 
 ## Options
@@ -45,7 +67,9 @@ npx create-filecoin-app my-app --storacha
 | `--lighthouse` | Initialize with Lighthouse NFT integration | `false` |
 
 Integrations with Axelar is currently being worked on, and would be added to the CLI soon.
-This woukd then extend the Options to include `--axelar`.
+This would then extend the Options to include `--axelar`.
+
+After running the CLI, your new project will be set up and ready for development with your chosen storage onramp.
 
 ## Project Structure
 
