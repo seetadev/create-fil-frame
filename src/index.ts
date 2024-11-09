@@ -37,7 +37,7 @@ function showWelcomeMessage() {
 
 
 function cloneContents(branch: string, projectPath: string) {
-  const cloneBranch = branch === 'storacha' ? 'storacha-nfts' : branch === 'lighthouse' ? 'lighthouse-nfts' : branch === 'akave' ? 'akave-integrations' : 'main';
+  const cloneBranch = branch === 'storacha' ? 'storacha-nfts' : branch === 'lighthouse' ? 'lighthouse-nfts' : branch === 'akave' ? 'akave-integration' : 'main';
   execSync(`git clone --branch ${cloneBranch} ${REPOSITORY_URL} ${projectPath}`);
   fs.rmSync(path.join(projectPath, '.git'), { recursive: true, force: true });
 }
