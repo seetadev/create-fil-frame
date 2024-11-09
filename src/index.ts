@@ -37,7 +37,7 @@ function showWelcomeMessage() {
 
 
 function cloneContents(branch: string, projectPath: string) {
-  const cloneBranch = branch === 'storacha' ? 'storacha-nfts' : branch === 'lighthouse' ? 'lighthouse-nfts' : 'main';
+  const cloneBranch = branch === 'storacha' ? 'storacha-nfts' : branch === 'lighthouse' ? 'lighthouse-nfts' : branch === 'akave' ? 'akave-integrations' : 'main';
   execSync(`git clone --branch ${cloneBranch} ${REPOSITORY_URL} ${projectPath}`);
   fs.rmSync(path.join(projectPath, '.git'), { recursive: true, force: true });
 }
@@ -74,26 +74,17 @@ async function interactiveMode() {
     {
       type: 'list',
       name: 'storageProvider',
-      message: 'Which storage provider would you like to use?',
+      message: 'Which feature would you like to use?',
       choices: [
-        { name: 'Default', value: 'main' },
         { name: 'Storacha', value: 'storacha' },
-        { name: 'Lighthouse', value: 'lighthouse' }
+        { name: 'Lighthouse', value: 'lighthouse' },
+        { name: 'Akave', value: 'akave' },
+        { name: 'Deal Client (not recommended for beginners)', value: 'main' }
       ]
     },
-    {
-      type: 'list',
-      name: 'packageManager',
-      message: 'Which package manager would you like to use?',
-      choices: [
-        { name: 'yarn', value: 'yarn' },
-        { name: 'npm', value: 'npm' }
-      ],
-      default: 'yarn'
-    }
   ]);
 
-  await createFilecoinApp(answers.projectName, answers.storageProvider, answers.packageManager);
+  await createFilecoinApp(answers.projectName, answers.storageProvider, 'yarn');
 }
 
 program
@@ -102,6 +93,7 @@ program
   .argument('[project-name]', 'Name of the new project')
   .option('--storacha', 'Initialize the repository using Storacha as the storage provider')
   .option('--lighthouse', 'Initialize the repository using Lighthouse as the storage provider')
+  .option('--akave', 'Initialize the repository using Akave as the storage provider')
   .action(async (projectName, options) => {
     if (!projectName) {
       await interactiveMode();
@@ -113,6 +105,8 @@ program
       branch = 'storacha';
     } else if (options.lighthouse) {
       branch = 'lighthouse';
+    } else if (options.akave) {
+      branch = 'akave';
     }
     await createFilecoinApp(projectName, branch, 'yarn');
   });
