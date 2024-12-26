@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { program } from 'commander';
+import { program, Option } from 'commander';
 import inquirer from 'inquirer';
 import { execSync } from 'child_process';
 import fs from 'fs';
@@ -35,7 +35,6 @@ function showWelcomeMessage() {
   `);
 }
 
-
 function cloneContents(branch: string, projectPath: string) {
   const cloneBranch = branch === 'storacha' ? 'storacha-nfts' : branch === 'lighthouse' ? 'lighthouse-nfts' : branch === 'akave' ? 'akave-integration' : 'main';
   execSync(`git clone --branch ${cloneBranch} ${REPOSITORY_URL} ${projectPath}`);
@@ -47,7 +46,7 @@ function runPackageInstall(projectPath: string, packageManager: string) {
   execSync(`${packageManager} install`, { stdio: 'inherit' });
 }
 
-async function createFilecoinApp(projectName: string, branch: string, packageManager: string = 'yarn') {
+async function createFilecoinApp(projectName: string, branch: string, packageManager: string = 'yarn', shouldInstallPackages: boolean = true) {
   const sanitizedProjectName = sanitize(projectName);
   const projectPath = path.resolve(process.cwd(), sanitizedProjectName);
 
@@ -56,10 +55,16 @@ async function createFilecoinApp(projectName: string, branch: string, packageMan
 
   cloneContents(branch, projectPath);
   initRepo(projectPath);
-  runPackageInstall(projectPath, packageManager);
+
+  if (shouldInstallPackages) {
+    console.log('Installing packages...');
+    runPackageInstall(projectPath, packageManager);
+  } else {
+    console.log('Skipping package installation.');
+  }
+
   console.log(`Successfully created ${sanitizedProjectName}!`);
 }
-
 
 async function interactiveMode() {
   showWelcomeMessage();
@@ -79,36 +84,47 @@ async function interactiveMode() {
         { name: 'Storacha', value: 'storacha' },
         { name: 'Lighthouse', value: 'lighthouse' },
         { name: 'Akave', value: 'akave' },
-        { name: 'Deal Client (not recommended for beginners)', value: 'main' }
+        { name: 'Deal Client', value: 'main' }
       ]
     },
+    {
+      type: 'confirm',
+      name: 'installPackages',
+      message: 'Would you like to install packages now? This might take a while.',
+      default: true
+    }
   ]);
 
-  await createFilecoinApp(answers.projectName, answers.storageProvider, 'yarn');
+  await createFilecoinApp(
+    answers.projectName,
+    answers.storageProvider,
+    'yarn',
+    answers.installPackages
+  );
 }
 
 program
-  .version('1.0.1')
+  .version('1.0.3')
   .description('CLI to create a new Filecoin app')
   .argument('[project-name]', 'Name of the new project')
-  .option('--storacha', 'Initialize the repository using Storacha as the storage provider')
-  .option('--lighthouse', 'Initialize the repository using Lighthouse as the storage provider')
-  .option('--akave', 'Initialize the repository using Akave as the storage provider')
+  .addOption(new Option('--provider <type>', 'Choose storage provider')
+    .choices(['storacha', 'lighthouse', 'akave', 'main'])
+    .default('main'))
+  .option('--skip-install', 'Skip package installation')
   .action(async (projectName, options) => {
     if (!projectName) {
       await interactiveMode();
       return;
     }
 
-    let branch = 'main';
-    if (options.storacha) {
-      branch = 'storacha';
-    } else if (options.lighthouse) {
-      branch = 'lighthouse';
-    } else if (options.akave) {
-      branch = 'akave';
-    }
-    await createFilecoinApp(projectName, branch, 'yarn');
+    const branch = options.provider;
+
+    await createFilecoinApp(
+      projectName,
+      branch,
+      'yarn',
+      !options.skipInstall
+    );
   });
 
 program.parse();
