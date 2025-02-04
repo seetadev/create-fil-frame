@@ -31,45 +31,50 @@ To use the interactive mode, simply run:
 npx create-filecoin-app
 ```
 
-You will be prompted to answer a series of questions to configure your new project. This includes your project name, selecting your preferred storage onramp option (Lighthouse, or Storacha), and even selecting your preferred package manager (Yarn, or NPM).
+You will be prompted to answer a series of questions to configure your new project. This includes your project name, selecting your preferred storage provider (Lighthouse, Storacha, Akave, and the Deal Client), and choosing whether to install project packages (using yarn).
 
 ### Flag Mode
 
-If you prefer to skip the prompts, you can use the flag mode to specify your options directly. For example, to initialise a project named `my-app`, with lighthouse as the storage onramp:
+If you prefer to skip the prompts, you can use the flag mode to specify your options directly. 
+
+#### Flag Options
+
+- Storage Provider (--provider): This contains 4 options currently: storacha, lighthouse, akave, and main.
+- Skip package installation (--skip-install)
+
+For example, to initialise a project named `my-app`, with lighthouse as the storage onramp:
 
 ```bash
-npx create-filecoin-app my-app --lighthouse
+npx create-filecoin-app my-app --provider lighthouse
 ```
 
 This command initializes a new repository named `my-app` with Lighthouse as the storage onramp.
 
-#### Using with Storacha NFTs
+### Provider Options
 
-To initialize a project with Storacha NFT integration, we make use of the `--storacha` flag:
+#### Storacha NFTs
 
-```bash
-npx create-filecoin-app my-app --storacha
-```
-
-#### Using with Lighthouse NFTs
-
-To initialize a project with Lighthouse NFT integration, we make use of the `--lighthouse` flag:
+To initialize a project with Storacha NFT integration, we make use of the `--storacha` option:
 
 ```bash
-npx create-filecoin-app my-app --lighthouse
+npx create-filecoin-app my-app --provider storacha
 ```
 
-## Options
+#### Lighthouse NFTs
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--storacha` | Initialize with Storacha NFT integration | `false` |
-| `--lighthouse` | Initialize with Lighthouse NFT integration | `false` |
+To initialize a project with Lighthouse NFT integration, we make use of the `--lighthouse` option:
 
-Integrations with Axelar is currently being worked on, and would be added to the CLI soon.
-This would then extend the Options to include `--axelar`.
+```bash
+npx create-filecoin-app my-app --provider lighthouse
+```
 
-After running the CLI, your new project will be set up and ready for development with your chosen storage onramp.
+#### Akave
+
+To initialize a project with an Akave integration, we make use of the `akave` option:
+
+```bash
+npx create-filecoin-app my-app --provider akave
+```
 
 ## Project Structure
 
